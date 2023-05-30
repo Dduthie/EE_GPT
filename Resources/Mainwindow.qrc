@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="Settings">
+    <file>settings_FILL.png</file>
+    <file>settings_unchecked.png</file>
+  </qresource>
+</RCC>
