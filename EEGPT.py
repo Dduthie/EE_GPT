@@ -13,10 +13,13 @@ class EEGPT():
     def __init__(self) -> None:
         self.API_KEY = os.environ['OPENAI_API_KEY']
         openai.api_key= self.API_KEY
-        self.model = "gpt-3.5-turbo"
+        self.model = "gpt-3.5-turbo-0613"
+        #self.model = "gpt-3.5-turbo-16k-0613"
         self.messages=[
-                {"role": "system", "content": "You are a helpful assistant."}, 
+                {"role": "system", "content": "You are a helpful assistant who gives clear and concise answers, extra chat is kept to a minimum."}, 
             ]
+
+        self.stream = True
     
     def resetPrompt(self):
         return [{"role": "user", "content": "You are a helpful assistant."},
@@ -37,83 +40,76 @@ class EEGPT():
         )
         message = response['choices'][0]['text']
         print(message)
-
-    def send_messages(self,prompt):
-        prompt = {"role": "user", "content": prompt}
-        self.messages.append(prompt)
     
+    #message receiever/parser
+    def GPT(self,prompt):
+        
+        if prompt == '/reset':
+            self.messages = self.resetPrompt()
+            return []
+
+        else:
+            prompt = {"role": "user", "content": prompt}
+            self.messages.append(prompt)
+            response = self.send_messages()
+            result = ''
+            for chunk in response:
+                try:
+                    res = chunk['choices'][0]['delta']['content']
+                    result += res
+                    yield res
+                    
+                except KeyError:
+                    pass
+                
+            self.messages.append({"role": "assistant", "content": result})
+
+    
+    def get_tokens(self):
+        num = self.num_tokens_from_messages(self.messages)
+        return(num)     
+    
+    def send_messages(self):
         response = openai.ChatCompletion.create(
         model=self.model,
         messages=self.messages,
-        
-        
-        )
-        message = response['choices'][0]['message']
-        print()
-        print(message['content'])
-        self.messages.append(message)
-        return message['content']
-    
-    def send_messages_stream(self,prompt):
-        prompt = {"role": "user", "content": prompt}
-        self.messages.append(prompt)
-    
-        response = openai.ChatCompletion.create(
-        model=self.model,
-        messages=self.messages,
-        stream = True
-        
+        stream=self.stream
         
         )
-        return response
+        if self.stream:
+            return response
+        else:
+            message = response['choices'][0]['message']
+            print()
+            print(message['content'])
+            self.messages.append(message)
+            return message['content']
 
-    #{"role": "user", "content": "You are a helpful assistant."}
-    # print('\n\n')
-    # while True:
-
-    #     prompt = input("> ")
-    #     if prompt == 'end':
-    #         break
-    #     elif prompt == 'reset':
-    #         messages = resetPrompt()
-            
-    #     elif prompt == 'swap':
-    #         if model == 'gpt-4-0314':
-    #             model = "gpt-3.5-turbo"
-    #         elif model == "gpt-3.5-turbo":
-    #             model = 'gpt-4-0314'
-    #         print('switching to: ' + model)
-            
-    #     elif prompt == 'read': 
-    #         prompt = {"role": "user", "content": read_file()}
-    #         messages.append(prompt)
-    #         send_messages()
-    #     elif prompt == 'unhinged':
-    #         prompt = input("> ")
-    #         unhinged(prompt)
-    #     else:
-    #         prompt = {"role": "user", "content": prompt}
-    #         messages.append(prompt)
-    #         send_messages()
-            
-    #     print()
-
-    def num_tokens_from_messages(self,messages, model="gpt-3.5-turbo-0301"):
+    def num_tokens_from_messages(self,messages):
+        model = self.model
         """Returns the number of tokens used by a list of messages."""
         try:
             encoding = tiktoken.encoding_for_model(model)
         except KeyError:
+            print("Warning: model not found. Using cl100k_base encoding.")
             encoding = tiktoken.get_encoding("cl100k_base")
-        if model == "gpt-3.5-turbo-0301":  # note: future models may deviate from this
-            num_tokens = 0
-            for message in messages:
-                num_tokens += 4  # every message follows <im_start>{role/name}\n{content}<im_end>\n
-                for key, value in message.items():
-                    num_tokens += len(encoding.encode(value))
-                    if key == "name":  # if there's a name, the role is omitted
-                        num_tokens += -1  # role is always required and always 1 token
-            num_tokens += 2  # every reply is primed with <im_start>assistant
-            return num_tokens
+        if model == "gpt-4":
+            print("Warning: gpt-4 may change over time. Returning num tokens assuming gpt-4-0314.")
+            return self.num_tokens_from_messages(messages, model="gpt-4-0314")
+        elif model == "gpt-3.5-turbo-0613":
+            tokens_per_message = 4  # every message follows <|start|>{role/name}\n{content}<|end|>\n
+            tokens_per_name = -1  # if there's a name, the role is omitted
+        elif model == "gpt-4-0314":
+            tokens_per_message = 3
+            tokens_per_name = 1
         else:
-            raise NotImplementedError(f"""num_tokens_from_messages() is not presently implemented for model {model}.
-        See https://github.com/openai/openai-python/blob/main/chatml.md for information on how messages are converted to tokens.""")
+            raise NotImplementedError(f"""num_tokens_from_messages() is not implemented for model {model}. See https://github.com/openai/openai-python/blob/main/chatml.md for information on how messages are converted to tokens.""")
+        num_tokens = 0
+        for message in messages:
+            num_tokens += tokens_per_message
+            for key, value in message.items():
+                num_tokens += len(encoding.encode(value))
+                if key == "name":
+                    num_tokens += tokens_per_name
+        num_tokens += 3  # every reply is primed with <|start|>assistant<|message|>
+        return num_tokens
