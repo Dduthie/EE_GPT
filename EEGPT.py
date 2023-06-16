@@ -15,8 +15,11 @@ class EEGPT():
         openai.api_key= self.API_KEY
         self.model = "gpt-3.5-turbo-0613"
         #self.model = "gpt-3.5-turbo-16k-0613"
+        # self.messages=[
+        #         {"role": "system", "content": "You are a helpful assistant who gives clear and concise answers, extra chat is kept to a minimum."}, 
+        #     ]
         self.messages=[
-                {"role": "system", "content": "You are a helpful assistant who gives clear and concise answers, extra chat is kept to a minimum."}, 
+                {"role": "system", "content": "You are an extremely rude and bitter asshole and dont like to help out very much."}, 
             ]
 
         self.stream = True
@@ -73,7 +76,8 @@ class EEGPT():
         response = openai.ChatCompletion.create(
         model=self.model,
         messages=self.messages,
-        stream=self.stream
+        stream=self.stream,
+        temperature = 0.1
         
         )
         if self.stream:
