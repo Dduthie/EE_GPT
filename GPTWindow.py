@@ -10,7 +10,7 @@ from PySide6 import QtGui
 from PySide6.QtWidgets import (QApplication, QGridLayout, QLabel, QMainWindow,
     QMenu, QMenuBar, QPlainTextEdit, QPushButton,
     QSizePolicy, QStatusBar, QTextBrowser, QTextEdit,
-    QWidget)
+    QWidget,QFontDialog)
 from PySide6 import QtCore
 from PySide6.QtGui import QKeyEvent
 #  pyuic6 -o UImainwindow.py -x UImainwindow.ui   
@@ -52,6 +52,11 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         self.insertTextWorker.result_ready.connect(self.handle_worker_result)
         self.insertTextWorker.tokens_ready.connect(self.update_tokens)
         self.update_tokens(0)
+        
+        self._ui.action_open_font_dialog.triggered.connect(
+            lambda: QFontDialog.getFont(
+                QFont(), parent=self, options=QFontDialog.FontDialogOption.DontUseNativeDialog
+            ))
     
     def eventFilter(self, obj:QTextEdit, event:QKeyEvent):
         if event.type() == QtCore.QEvent.Type.KeyPress and obj is self.Input:
