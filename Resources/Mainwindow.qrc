@@ -1,9 +1,0 @@
-<RCC>
-  <qresource prefix="Settings">
-    <file>folder_open_FILL14.svg</file>
-    <file>add_comment_FILL1_24.svg</file>
-    <file>settings_FILL_24.svg</file>
-    <file>chat_FILL1_24.svg</file>
-  </qresource>
-  <qresource prefix="newPrefix"/>
-</RCC>

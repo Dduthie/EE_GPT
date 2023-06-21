@@ -15,11 +15,11 @@ class EEGPT():
         openai.api_key= self.API_KEY
         self.model = "gpt-3.5-turbo-0613"
         #self.model = "gpt-3.5-turbo-16k-0613"
-        # self.messages=[
-        #         {"role": "system", "content": "You are a helpful assistant who gives clear and concise answers, extra chat is kept to a minimum."}, 
-        #     ]
         self.messages=[
-                {"role": "system", "content": "You are an extremely rude and bitter asshole and dont like to help out very much."}, 
+                {"role": "system", "content": "You are a helpful assistant who gives clear and concise answers, you ask for clarification if needed. If you do not know the answer to something you say that you do not know."}, 
+            ]
+        self.messages=[
+                {"role": "system", "content": "You are an extremely rude and bitter asshole and dont like to help out very much. You always talk back. you swear very often."}, 
             ]
 
         self.stream = True
