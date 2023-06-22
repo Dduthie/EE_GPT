@@ -61,6 +61,23 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         self.actionFont.triggered.connect(self._setFont)
         self.pushButton.released.connect(self.send_message)
         # self.actionSettings.setIcon()
+        self.actionchat.triggered.connect(lambda: self.stackedWidget.setCurrentIndex(0))
+        self.actionSettings.triggered.connect(lambda: self.stackedWidget.setCurrentIndex(1))
+        self.numChats = 0
+        self.actionadd_chat.triggered.connect(self.addChat)
+    
+    def addChat(self):
+        self.numChats+=1
+        pageN = QWidget()
+        layout = QGridLayout(pageN)
+        pageN.setObjectName(f"page_{self.numChats}")
+        
+        for widg in self.stackedWidget.children():
+            clone = widg.clone()
+            layout.addWidget(clone)
+        self.stackedWidget.addWidget(pageN)
+        self.stackedWidget.setCurrentIndex(2)
+           
     
     def _setFont(self):
         ok,self.newFont = QFontDialog.getFont()
@@ -75,7 +92,7 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         
     def eventFilter(self, obj:QTextEdit, event:QKeyEvent):
         if event.type() == QtCore.QEvent.Type.KeyPress and obj is self.Input:
-            if ((event.key() == QtCore.Qt.Key.Key_Return or event.key() == QtCore.Qt.Key.Key_Enter) and not event.modifiers() == QtCore.Qt.ShiftModifier) and self.Input.hasFocus():
+            if ((event.key() == QtCore.Qt.Key.Key_Return or event.key() == QtCore.Qt.Key.Key_Enter) and not event.modifiers() == QtCore.Qt.KeyboardModifier.ShiftModifier) and self.Input.hasFocus():
                 self.send_message()
                 return True
         return super().eventFilter(obj,event)
