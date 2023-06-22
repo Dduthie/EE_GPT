@@ -60,7 +60,7 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         self.update_tokens(0)
         self.actionFont.triggered.connect(self._setFont)
         self.pushButton.released.connect(self.send_message)
-        # self.actionSettings.setIcon()
+        self.splitter.setSizes([400,50])
     
     def _setFont(self):
         ok,self.newFont = QFontDialog.getFont()

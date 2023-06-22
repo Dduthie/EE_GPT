@@ -19,8 +19,8 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QComboBox, QGridLayout,
     QLabel, QMainWindow, QMenu, QMenuBar,
     QPushButton, QSizePolicy, QSlider, QSpacerItem,
-    QStackedWidget, QStatusBar, QTextEdit, QToolBar,
-    QWidget)
+    QSplitter, QStackedWidget, QStatusBar, QTextEdit,
+    QToolBar, QWidget)
 import Mainwindow_rc
 
 class Ui_MainWindow(object):
@@ -85,25 +85,27 @@ class Ui_MainWindow(object):
         self.page.setObjectName(u"page")
         self.gridLayout_2 = QGridLayout(self.page)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.Ouput = QTextEdit(self.page)
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.gridLayout_2.addItem(self.horizontalSpacer, 1, 0, 1, 1)
+
+        self.pushButton = QPushButton(self.page)
+        self.pushButton.setObjectName(u"pushButton")
+
+        self.gridLayout_2.addWidget(self.pushButton, 1, 1, 1, 1)
+
+        self.splitter = QSplitter(self.page)
+        self.splitter.setObjectName(u"splitter")
+        self.splitter.setOrientation(Qt.Vertical)
+        self.splitter.setHandleWidth(3)
+        self.Ouput = QTextEdit(self.splitter)
         self.Ouput.setObjectName(u"Ouput")
         self.Ouput.setFocusPolicy(Qt.ClickFocus)
         self.Ouput.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.Ouput.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.Ouput.setReadOnly(True)
-
-        self.gridLayout_2.addWidget(self.Ouput, 0, 0, 1, 2)
-
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.gridLayout_2.addItem(self.horizontalSpacer, 2, 0, 1, 1)
-
-        self.pushButton = QPushButton(self.page)
-        self.pushButton.setObjectName(u"pushButton")
-
-        self.gridLayout_2.addWidget(self.pushButton, 2, 1, 1, 1)
-
-        self.Input = QTextEdit(self.page)
+        self.splitter.addWidget(self.Ouput)
+        self.Input = QTextEdit(self.splitter)
         self.Input.setObjectName(u"Input")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -113,8 +115,9 @@ class Ui_MainWindow(object):
         self.Input.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
         self.Input.setAutoFormatting(QTextEdit.AutoNone)
         self.Input.setReadOnly(False)
+        self.splitter.addWidget(self.Input)
 
-        self.gridLayout_2.addWidget(self.Input, 1, 0, 1, 2)
+        self.gridLayout_2.addWidget(self.splitter, 0, 0, 1, 2)
 
         self.stackedWidget.addWidget(self.page)
         self.page_2 = QWidget()

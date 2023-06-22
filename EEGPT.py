@@ -18,9 +18,9 @@ class EEGPT():
         self.messages=[
                 {"role": "system", "content": "You are a helpful assistant who gives clear and concise answers, you ask for clarification if needed. If you do not know the answer to something you say that you do not know."}, 
             ]
-        self.messages=[
-                {"role": "system", "content": "You are an extremely rude and bitter asshole and dont like to help out very much. You always talk back. you swear very often."}, 
-            ]
+        # self.messages=[
+        #         {"role": "system", "content": "You are an extremely rude and bitter asshole and dont like to help out very much. You always talk back. you swear very often."}, 
+        #     ]
 
         self.stream = True
     
