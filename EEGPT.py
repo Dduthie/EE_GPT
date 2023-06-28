@@ -8,25 +8,29 @@ import os
 import openai
 import tiktoken
 
-class EEGPT():
+class EEGPT(int):
 
     def __init__(self) -> None:
         self.API_KEY = os.environ['OPENAI_API_KEY']
         openai.api_key= self.API_KEY
         self.model = "gpt-3.5-turbo-0613"
         #self.model = "gpt-3.5-turbo-16k-0613"
-        self.messages=[
-                {"role": "system", "content": "You are a helpful assistant who gives clear and concise answers, you ask for clarification if needed. If you do not know the answer to something you say that you do not know."}, 
-            ]
-        # self.messages=[
-        #         {"role": "system", "content": "You are an extremely rude and bitter asshole and dont like to help out very much. You always talk back. you swear very often."}, 
-        #     ]
+        self.messages = []
+
+        self.startPrompt={
+            "role": "system", "content": "You are a helpful assistant who gives clear and concise answers, you ask for clarification if needed. If you do not know the answer to something you say that you do not know."
+            }
+        # self.startPrompt={
+        #     "role": "system", "content": "You are an extremely rude and bitter asshole and dont like to help out very much. You always talk back. you swear very often.You are at the same time very funny"
+        #     }
+        
+        self.messages.append(self.startPrompt)
 
         self.stream = True
     
     def resetPrompt(self):
-        return [{"role": "user", "content": "You are a helpful assistant."},
-                {"role": "assistant", "content": " Okay."}]
+        self.messages = []
+        self.messages.append(self.startPrompt)
 
     def read_file(self):
         with open('gpt.txt', 'r') as file:

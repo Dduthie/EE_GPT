@@ -1,30 +1,30 @@
 import configparser
+from ast import literal_eval
 
 class Configurator:
     def __init__(self):
         self.config = configparser.ConfigParser()
         self.config.read('config.ini')
         self.settingsDict = {}
-        self.settingsDict['width'] = int(self.config['USER']['screenWidth'])
-        self.settingsDict['height'] = int(self.config['USER']['screenHeight'])
-        self.settingsDict['icon'] = self.config['USER']['iconColour']
-        self.settingsDict['theme'] = self.config['USER']['theme']
-        
+        for key, value in self.config['USER'].items():
+            try:
+                self.settingsDict[key] = literal_eval(value)
+            except ValueError: 
+                self.settingsDict[key] = value
+
     def getDefaultView(self):
-        width = self.config['DEFAULT']['screenWidth']
-        height = self.config['DEFAULT']['screenHeight']
+        width = self.config['DEFAULT']['screenwidth']
+        height = self.config['DEFAULT']['screenheight']
         return width, height
-    
+
     def getDefaultIcon(self):
-        return self.config['DEFAULT']['iconColour']
-    
+        return self.config['DEFAULT']['iconcolour']
+
     def getDefaultTheme(self):
         return self.config['DEFAULT']['theme']
-    
-    def setUserSettings(self,settingsDict):
-        self.config['USER']['screenWidth'] = settingsDict['width']
-        self.config['USER']['screenHeight'] = settingsDict['height']
-        self.config['USER']['iconColour'] = settingsDict['icon']
-        self.config['USER']['theme'] = settingsDict['theme']
+
+    def setUserSettings(self,settingsDict:dict):
+        for key, value in settingsDict.items():
+            self.config['USER'][key] = value
         with open('config.ini', 'w') as configfile:
             self.config.write(configfile)

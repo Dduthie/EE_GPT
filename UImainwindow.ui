@@ -44,30 +44,14 @@
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="1" column="0">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item row="1" column="1">
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="pushButton_2">
           <property name="text">
-           <string>Submit</string>
+           <string>Reset</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="0" colspan="2">
+        <item row="0" column="0" colspan="3">
          <widget class="QSplitter" name="splitter">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -109,6 +93,29 @@
             <string>Enter text here</string>
            </property>
           </widget>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="2">
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>Submit</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -243,6 +250,8 @@ QSlider::sub-page:vertical {
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionLoad_ffile"/>
+    <addaction name="actionSave_file"/>
     <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -254,22 +263,12 @@ QSlider::sub-page:vertical {
     <property name="title">
      <string>View</string>
     </property>
-   </widget>
-   <widget class="QMenu" name="menuContext_Manager">
-    <property name="title">
-     <string>Context Manager</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuPrompt_Editor">
-    <property name="title">
-     <string>Prompt Editor</string>
-    </property>
+    <addaction name="actionFullscreen"/>
+    <addaction name="actionReset_View"/>
    </widget>
    <addaction name="menuChat"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
-   <addaction name="menuContext_Manager"/>
-   <addaction name="menuPrompt_Editor"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -413,6 +412,26 @@ QSlider::sub-page:vertical {
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionReset_View">
+   <property name="text">
+    <string>Reset View</string>
+   </property>
+  </action>
+  <action name="actionFullscreen">
+   <property name="text">
+    <string>Fullscreen</string>
+   </property>
+  </action>
+  <action name="actionLoad_ffile">
+   <property name="text">
+    <string>Load file</string>
+   </property>
+  </action>
+  <action name="actionSave_file">
+   <property name="text">
+    <string>Save file</string>
    </property>
   </action>
  </widget>
