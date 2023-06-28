@@ -10,11 +10,12 @@ import tiktoken
 
 class EEGPT(int):
 
-    def __init__(self) -> None:
+    def __init__(self,startupPrompt=None) -> None:
         self.API_KEY = os.environ['OPENAI_API_KEY']
         openai.api_key= self.API_KEY
         self.model = "gpt-3.5-turbo-0613"
         #self.model = "gpt-3.5-turbo-16k-0613"
+        self.conversations = {}
         self.messages = []
 
         self.startPrompt={
@@ -25,8 +26,12 @@ class EEGPT(int):
         #     }
         
         self.messages.append(self.startPrompt)
-
         self.stream = True
+    
+    # def addConversation(self,index):
+    #     self.conversations[index] = [].append(self.startPrompt)
+    
+    # def removeConversation 
     
     def resetPrompt(self):
         self.messages = []

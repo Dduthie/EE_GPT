@@ -56,6 +56,10 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         self.scrollFollow = True
         self.Input.installEventFilter(self)
         
+        self.conversations = {}
+        self.convoActions = {}
+        self.activeChatIndex = 0
+        
         self.insertTextWorker = Worker()
         self.insertTextWorker.result_ready.connect(self.handle_worker_result)
         self.insertTextWorker.tokens_ready.connect(self.update_tokens)
@@ -78,6 +82,7 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
 
     def resetView(self):
         self.setGeometry(500,500,750,750)
+        
     def fullScreen(self):
         self.fullScreen()
         
@@ -95,23 +100,34 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         print(text)
 
     def addChat(self):
-        self.numChats+=1
-        pageN = QWidget()
-        layout = QGridLayout(pageN)
-        pageN.setObjectName(f"page_{self.numChats}")
+        self.numChats += 1
+        self.conversations[self.activeChatIndex] = self.Ouput.toHtml()
+        action = QAction(QIcon(u"./Resources/chat_FILL1_24.svg"), "New chat", self)
+        action.setObjectName(str(self.numChats))  # Set the name property to the index
+        action.triggered.connect(self.changeChat)
+        self.convoActions[self.numChats] = action
+        self.toolBar_2.insertAction(self.toolBar_2.actions()[-4], action)
+        self.Ouput.clear()
         
-        for widg in self.stackedWidget.children():
-            clone = widg.clone()
-            layout.addWidget(clone)
-        self.stackedWidget.addWidget(pageN)
-        self.stackedWidget.setCurrentIndex(2)
+    def removeChat(self, index):
+        if index in self.conversations:
+            del self.conversations[index]
+            action = self.convoActions.pop(index, None)
+            if action:
+                self.toolBar_2.removeAction(action)
+    
+    def changeChat(self):
+        sender = self.sender()
+        index = int(sender.objectName())  # Retrieve the index from the name property
+        self.activeChatIndex = index
+        self.Ouput.setHtml(self.conversations[index])
 
     def _setFont(self):
         ok,self.newFont = QFontDialog.getFont()
         self.Input.setFont(self.newFont)
         self.Ouput.setFont(self.newFont)
         # app.setFont(self.newFont)normal resting heart rate
-        
+
 
     def eventFilter(self, obj:QTextEdit, event:QKeyEvent):
         if event.type() == QtCore.QEvent.Type.KeyPress and obj is self.Input:

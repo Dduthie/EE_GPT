@@ -19,8 +19,8 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QComboBox, QGridLayout,
     QLabel, QMainWindow, QMenu, QMenuBar,
     QPushButton, QSizePolicy, QSlider, QSpacerItem,
-    QSplitter, QStackedWidget, QStatusBar, QTextEdit,
-    QToolBar, QWidget)
+    QSplitter, QStackedWidget, QStatusBar, QTabWidget,
+    QTextEdit, QToolBar, QVBoxLayout, QWidget)
 import Mainwindow_rc
 
 class Ui_MainWindow(object):
@@ -32,6 +32,7 @@ class Ui_MainWindow(object):
         icon = QIcon()
         icon.addFile(u":/Icons/Resources/artificial-intelligence-48.png", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
+        MainWindow.setToolButtonStyle(Qt.ToolButtonIconOnly)
         MainWindow.setDocumentMode(False)
         MainWindow.setDockOptions(QMainWindow.AllowTabbedDocks|QMainWindow.AnimatedDocks)
         self.actionSettings = QAction(MainWindow)
@@ -86,7 +87,7 @@ class Ui_MainWindow(object):
         self.stackedWidget.setObjectName(u"stackedWidget")
         font = QFont()
         font.setFamilies([u"Segoe UI"])
-        font.setPointSize(17)
+        font.setPointSize(9)
         self.stackedWidget.setFont(font)
         self.stackedWidget.setStyleSheet(u"")
         self.page = QWidget()
@@ -137,88 +138,82 @@ class Ui_MainWindow(object):
         self.page_2.setObjectName(u"page_2")
         self.gridLayout_3 = QGridLayout(self.page_2)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.comboBox = QComboBox(self.page_2)
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.setObjectName(u"comboBox")
-        font1 = QFont()
-        font1.setFamilies([u"Segoe UI"])
-        font1.setPointSize(12)
-        self.comboBox.setFont(font1)
-
-        self.gridLayout_3.addWidget(self.comboBox, 0, 1, 1, 1)
-
-        self.label = QLabel(self.page_2)
+        self.tabWidget = QTabWidget(self.page_2)
+        self.tabWidget.setObjectName(u"tabWidget")
+        self.tabWidget.setLayoutDirection(Qt.LeftToRight)
+        self.tabWidget.setTabPosition(QTabWidget.North)
+        self.tabWidget.setTabShape(QTabWidget.Rounded)
+        self.tabWidget.setElideMode(Qt.ElideNone)
+        self.tab = QWidget()
+        self.tab.setObjectName(u"tab")
+        self.verticalLayout = QVBoxLayout(self.tab)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.label = QLabel(self.tab)
         self.label.setObjectName(u"label")
         sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
         self.label.setSizePolicy(sizePolicy1)
-        font2 = QFont()
-        font2.setFamilies([u"Segoe UI"])
-        font2.setPointSize(14)
-        self.label.setFont(font2)
+        font1 = QFont()
+        font1.setFamilies([u"Segoe UI"])
+        font1.setPointSize(14)
+        self.label.setFont(font1)
         self.label.setStyleSheet(u"")
 
-        self.gridLayout_3.addWidget(self.label, 1, 0, 1, 1)
+        self.verticalLayout.addWidget(self.label)
 
-        self.horizontalSlider = QSlider(self.page_2)
+        self.comboBox = QComboBox(self.tab)
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.setObjectName(u"comboBox")
+        font2 = QFont()
+        font2.setFamilies([u"Segoe UI"])
+        font2.setPointSize(12)
+        self.comboBox.setFont(font2)
+
+        self.verticalLayout.addWidget(self.comboBox)
+
+        self.label_2 = QLabel(self.tab)
+        self.label_2.setObjectName(u"label_2")
+        sizePolicy1.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy1)
+        self.label_2.setFont(font1)
+        self.label_2.setStyleSheet(u"")
+
+        self.verticalLayout.addWidget(self.label_2)
+
+        self.horizontalSlider = QSlider(self.tab)
         self.horizontalSlider.setObjectName(u"horizontalSlider")
-        self.horizontalSlider.setStyleSheet(u"QSlider::groove:horizontal {\n"
-"    background: red;\n"
-"    position: absolute; /* absolutely position 4px from the left and right of the widget. setting margins on the widget should work too... */\n"
-"    left: 4px; right: 4px;\n"
-"}\n"
-"\n"
-"QSlider::handle:horizontal {\n"
-"    height: 10px;\n"
-"    background: green;\n"
-"    margin: 0 -4px; /* expand outside the groove */\n"
-"}\n"
-"\n"
-"QSlider::add-page:horizontal {\n"
-"    background: white;\n"
-"}\n"
-"\n"
-"QSlider::sub-page:horizontal {\n"
-"    background: pink;\n"
-"}\n"
-"")
+        sizePolicy2 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.horizontalSlider.sizePolicy().hasHeightForWidth())
+        self.horizontalSlider.setSizePolicy(sizePolicy2)
+        self.horizontalSlider.setMinimum(1)
+        self.horizontalSlider.setMaximum(20)
+        self.horizontalSlider.setValue(5)
+        self.horizontalSlider.setSliderPosition(5)
         self.horizontalSlider.setOrientation(Qt.Horizontal)
+        self.horizontalSlider.setInvertedAppearance(False)
+        self.horizontalSlider.setInvertedControls(False)
+        self.horizontalSlider.setTickPosition(QSlider.TicksAbove)
+        self.horizontalSlider.setTickInterval(1)
 
-        self.gridLayout_3.addWidget(self.horizontalSlider, 3, 0, 1, 1)
+        self.verticalLayout.addWidget(self.horizontalSlider)
 
-        self.verticalSlider = QSlider(self.page_2)
-        self.verticalSlider.setObjectName(u"verticalSlider")
-        self.verticalSlider.setStyleSheet(u"QSlider::groove:vertical {\n"
-"    background: red;\n"
-"    position: absolute; /* absolutely position 4px from the left and right of the widget. setting margins on the widget should work too... */\n"
-"    left: 4px; right: 4px;\n"
-"}\n"
-"\n"
-"QSlider::handle:vertical {\n"
-"    height: 10px;\n"
-"    background: green;\n"
-"    margin: 0 -4px; /* expand outside the groove */\n"
-"}\n"
-"\n"
-"QSlider::add-page:vertical {\n"
-"    background: white;\n"
-"}\n"
-"\n"
-"QSlider::sub-page:vertical {\n"
-"    background: pink;\n"
-"}")
-        self.verticalSlider.setOrientation(Qt.Vertical)
+        self.tabWidget.addTab(self.tab, "")
+        self.tab_2 = QWidget()
+        self.tab_2.setObjectName(u"tab_2")
+        self.tabWidget.addTab(self.tab_2, "")
 
-        self.gridLayout_3.addWidget(self.verticalSlider, 2, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.tabWidget, 0, 0, 1, 1)
 
         self.stackedWidget.addWidget(self.page_2)
 
-        self.gridLayout.addWidget(self.stackedWidget, 0, 0, 1, 2)
+        self.gridLayout.addWidget(self.stackedWidget, 0, 0, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
@@ -242,11 +237,11 @@ class Ui_MainWindow(object):
         MainWindow.addToolBar(Qt.TopToolBarArea, self.toolBar)
         self.toolBar_2 = QToolBar(MainWindow)
         self.toolBar_2.setObjectName(u"toolBar_2")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.toolBar_2.sizePolicy().hasHeightForWidth())
-        self.toolBar_2.setSizePolicy(sizePolicy2)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.toolBar_2.sizePolicy().hasHeightForWidth())
+        self.toolBar_2.setSizePolicy(sizePolicy3)
         self.toolBar_2.setMinimumSize(QSize(0, 0))
         MainWindow.addToolBar(Qt.LeftToolBarArea, self.toolBar_2)
 
@@ -268,7 +263,8 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -302,17 +298,20 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.actionReset_View.setText(QCoreApplication.translate("MainWindow", u"Reset View", None))
         self.actionFullscreen.setText(QCoreApplication.translate("MainWindow", u"Fullscreen", None))
-        self.actionLoad_ffile.setText(QCoreApplication.translate("MainWindow", u"Load file", None))
-        self.actionSave_file.setText(QCoreApplication.translate("MainWindow", u"Save file", None))
+        self.actionLoad_ffile.setText(QCoreApplication.translate("MainWindow", u"Load conversation", None))
+        self.actionSave_file.setText(QCoreApplication.translate("MainWindow", u"Save conversation", None))
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Reset", None))
         self.Input.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Enter text here", None))
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Submit", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Model:", None))
         self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"ChatGPT 3.5", None))
         self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"ChatGPT 3.5 16k", None))
         self.comboBox.setItemText(2, QCoreApplication.translate("MainWindow", u"ChatGPT 4", None))
         self.comboBox.setItemText(3, QCoreApplication.translate("MainWindow", u"ChatGPT 4 32k", None))
 
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Model:", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Temperature:", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"GPT Options", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"App settings", None))
         self.menuChat.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuEdit.setTitle(QCoreApplication.translate("MainWindow", u"Edit", None))
         self.menuView.setTitle(QCoreApplication.translate("MainWindow", u"View", None))

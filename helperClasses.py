@@ -1,5 +1,4 @@
 import os
-import re
 
 class SVG:
     def __init__(self,fill): 
