@@ -19,14 +19,14 @@ class EEGPT:
         self.conversations = {}
         self.messages = []
 
-        self.startPrompt={
-            "role": "system", "content": "You are a helpful assistant who gives clear and concise answers, you ask for clarification if needed. If you do not know the answer to something you say that you do not know."
-            }
+        # self.startPrompt={
+        #     "role": "system", "content": "You are a helpful assistant who gives clear and concise answers, you ask for clarification if needed. If you do not know the answer to something you say that you do not know."
+        #     }
         # self.startPrompt={
         #     "role": "system", "content": "You are an extremely rude and bitter asshole and dont like to help out very much. You always talk back. you swear very often.You are at the same time very funny"
         #     }
         
-        self.messages.append(self.startPrompt)
+        # self.messages.append(self.startPrompt)
         self.stream = True
     
     def resetPrompt(self):
@@ -71,13 +71,11 @@ class EEGPT:
         # self.messages.append({"role": "assistant", "content": result})
 
     def get_tokens(self):
-        num = self.num_tokens_from_messages(self.messages)
+        num = self.num_tokens_from_messages(convoManager.getCurrentConversation())
         return(num)     
     
     def send_messages(self):
         messages = convoManager.getCurrentConversation()
-        print('hi'*5)
-        print(messages)
         response = openai.ChatCompletion.create(
         model=self.model,
         messages=messages,

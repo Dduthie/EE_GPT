@@ -69,6 +69,7 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         self.splitter.setSizes([400,50])
         # self.actionSettings.setIcon()
         self.actionchat.triggered.connect(lambda: self.stackedWidget.setCurrentIndex(0))
+        self.actionchat.triggered.connect(self.changeChat)
         self.actionSettings.triggered.connect(lambda: self.stackedWidget.setCurrentIndex(1))
         self.actionReset_View.triggered.connect(self.resetView)
         self.actionReset_View.setShortcut(Qt.Key.Key_F10)
@@ -82,11 +83,11 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         self.setGeometry(500,500,750,750)
         
     def fullScreen(self):
-        self.fullScreen()
+        self.showMaximized()
         
     def resetButton(self):
-        bot.resetPrompt()
         self.Ouput.clear()
+        convoManager.resetConvo()
         self.update_tokens(0)
 
 
@@ -94,6 +95,7 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         convoManager.addConversation(self.Ouput.toHtml())
         action = QAction(QIcon(u"./Resources/chat_FILL1_24.svg"), "New chat", self)
         action.triggered.connect(self.changeChat)
+        self.actionchat.triggered.connect(lambda: self.stackedWidget.setCurrentIndex(0))
         self.toolBar_2.insertAction(self.toolBar_2.actions()[-4], action)
         self.Ouput.clear()
         
@@ -106,9 +108,13 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
     
     def changeChat(self):
         sender = self.sender()
-        index = int(sender.objectName())  # Retrieve the index from the name property
-        self.activeChatIndex = index
-        self.Ouput.setHtml(self.conversations[index])
+        for index, action in enumerate(self.toolBar_2.actions()):
+            if action == sender:
+                print('found',index)
+                
+        
+        # self.activeChatIndex = index
+        # self.Ouput.setHtml(self.conversations[index])
 
     def _setFont(self):
         ok,self.newFont = QFontDialog.getFont()
@@ -188,16 +194,16 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
     def closeEvent(self, event):
         # Perform any necessary saving or cleanup operations here
         settingsDict = {}
+        geo = self.geometry()
         if self.isMaximized():
             diff = self.frameGeometry().height() - self.geometry().height()
             geoScreen = QGuiApplication.primaryScreen().availableGeometry()
             height = geoScreen.height() - diff
             width = geoScreen.width()
         else :
-            geo = self.geometry()
+            
             height = geo.height()
             width =  geo.width()
-
         x = geo.x()
         y = geo.y()
         self.hide()

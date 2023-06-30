@@ -29,10 +29,6 @@ class ConversationManager:
         newConvo.addSystem(self.promptManager.getSelectedPrompt())
         self.conversations[0] = newConvo
 
-    def resetConvo(self):
-        currentMessages = self.conversations[self.currentConversation].GPTmessages
-        self.conversations[self.currentConversation].GPTmessages = currentMessages[:1]
-    
     def getCurrentConversation(self):
         return self.conversations[self.currentConversation].GPTmessages
 
