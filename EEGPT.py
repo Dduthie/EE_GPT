@@ -7,8 +7,9 @@ requests.packages.urllib3.disable_warnings()
 import os
 import openai
 import tiktoken
+from conversations import convoManager
 
-class EEGPT(int):
+class EEGPT:
 
     def __init__(self,startupPrompt=None) -> None:
         self.API_KEY = os.environ['OPENAI_API_KEY']
@@ -27,11 +28,6 @@ class EEGPT(int):
         
         self.messages.append(self.startPrompt)
         self.stream = True
-    
-    # def addConversation(self,index):
-    #     self.conversations[index] = [].append(self.startPrompt)
-    
-    # def removeConversation 
     
     def resetPrompt(self):
         self.messages = []
@@ -54,37 +50,37 @@ class EEGPT(int):
         print(message)
     
     #message receiever/parser
-    def GPT(self,prompt):
+    def GPT(self):  
+        # if prompt == '/reset':
+        #     self.messages = self.resetPrompt()
+        #     return []
         
-        if prompt == '/reset':
-            self.messages = self.resetPrompt()
-            return []
-
-        else:
-            prompt = {"role": "user", "content": prompt}
-            self.messages.append(prompt)
-            response = self.send_messages()
-            result = ''
-            for chunk in response:
-                try:
-                    res = chunk['choices'][0]['delta']['content']
-                    result += res
-                    yield res
-                    
-                except KeyError:
-                    pass
+        # prompt = {"role": "user", "content": prompt}
+        # self.messages.append(prompt)
+        response = self.send_messages()
+        result = ''
+        for chunk in response:
+            try:
+                res = chunk['choices'][0]['delta']['content']
+                result += res
+                yield res
                 
-            self.messages.append({"role": "assistant", "content": result})
+            except KeyError:
+                pass
+        convoManager.addGPTChat(result)
+        # self.messages.append({"role": "assistant", "content": result})
 
-    
     def get_tokens(self):
         num = self.num_tokens_from_messages(self.messages)
         return(num)     
     
     def send_messages(self):
+        messages = convoManager.getCurrentConversation()
+        print('hi'*5)
+        print(messages)
         response = openai.ChatCompletion.create(
         model=self.model,
-        messages=self.messages,
+        messages=messages,
         stream=self.stream,
         temperature = 0.1
         

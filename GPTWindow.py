@@ -23,6 +23,7 @@ import os
 from helperClasses import SVG
 from Config import Configurator
 import pickle
+from conversations import convoManager
 
 import ctypes
 myappid = 'mycompany.myproduct.subproduct.version' # arbitrary string
@@ -37,11 +38,11 @@ class Worker(QThread):
         self.input_text = ''
 
     def set_input_text(self, text):
-        self.input_text = text
+        convoManager.addUserChat(text)
 
     def run(self):
         print(bot.messages)
-        for res in bot.GPT(self.input_text):
+        for res in bot.GPT():
             self.result_ready.emit(res)
         self.result_ready.emit('\n')
 
@@ -56,10 +57,6 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         self.scrollFollow = True
         self.Input.installEventFilter(self)
         
-        self.conversations = {}
-        self.convoActions = {}
-        self.activeChatIndex = 0
-        
         self.insertTextWorker = Worker()
         self.insertTextWorker.result_ready.connect(self.handle_worker_result)
         self.insertTextWorker.tokens_ready.connect(self.update_tokens)
@@ -67,7 +64,6 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         
         self.actionFont.triggered.connect(self._setFont)
         self.pushButton.released.connect(self.send_message)
-        self.pushButton.released.connect(self.test)
         self.pushButton_2.released.connect(self.resetButton)
         
         self.splitter.setSizes([400,50])
@@ -77,9 +73,11 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         self.actionReset_View.triggered.connect(self.resetView)
         self.actionReset_View.setShortcut(Qt.Key.Key_F10)
         self.actionFullscreen.setShortcut(Qt.Key.Key_F11)
-        self.numChats = 0
+
+        convoManager
         self.actionadd_chat.triggered.connect(self.addChat)
 
+        
     def resetView(self):
         self.setGeometry(500,500,750,750)
         
@@ -91,21 +89,11 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         self.Ouput.clear()
         self.update_tokens(0)
 
-    def test(self):
-        text = self.Ouput.toMarkdown()
-        self.Ouput.setMarkdown(text)
-        text = self.Ouput.toHtml()
-        self.Ouput.setHtml(text)
-        text = self.Ouput.toHtml()
-        print(text)
 
     def addChat(self):
-        self.numChats += 1
-        self.conversations[self.activeChatIndex] = self.Ouput.toHtml()
+        convoManager.addConversation(self.Ouput.toHtml())
         action = QAction(QIcon(u"./Resources/chat_FILL1_24.svg"), "New chat", self)
-        action.setObjectName(str(self.numChats))  # Set the name property to the index
         action.triggered.connect(self.changeChat)
-        self.convoActions[self.numChats] = action
         self.toolBar_2.insertAction(self.toolBar_2.actions()[-4], action)
         self.Ouput.clear()
         
@@ -127,7 +115,6 @@ class Mainwindow(QMainWindow, Ui_MainWindow):
         self.Input.setFont(self.newFont)
         self.Ouput.setFont(self.newFont)
         # app.setFont(self.newFont)normal resting heart rate
-
 
     def eventFilter(self, obj:QTextEdit, event:QKeyEvent):
         if event.type() == QtCore.QEvent.Type.KeyPress and obj is self.Input:
