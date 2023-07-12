@@ -27,6 +27,13 @@ class ConversationManager:
         newConvo.addSystem(self.promptManager.getSelectedPrompt())
         self.conversations[0] = newConvo
 
+    def exportConvo(self):
+        convo = self.conversations[self.currentConversation]
+        export = []
+        for line in convo.GPTmessages:
+            export.append(line['role']+": " +line['content']+'\n\n')
+        return export
+    
     def resetConvo(self):
         currentMessages = self.conversations[self.currentConversation].GPTmessages
         self.conversations[self.currentConversation].GPTmessages = currentMessages[:1]

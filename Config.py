@@ -1,16 +1,23 @@
 import configparser
 from ast import literal_eval
 
+
 class Configurator:
     def __init__(self):
         self.config = configparser.ConfigParser()
         self.config.read('config.ini')
         self.settingsDict = {}
+        self.defaultDict = {}
         for key, value in self.config['USER'].items():
             try:
                 self.settingsDict[key] = literal_eval(value)
-            except ValueError: 
+            except (ValueError, SyntaxError): 
                 self.settingsDict[key] = value
+        for key, value in self.config['DEFAULT'].items():
+            try:
+                self.defaultDict[key] = literal_eval(value)
+            except (ValueError, SyntaxError): 
+                self.defaultDict[key] = value
 
     def getDefaultView(self):
         width = self.config['DEFAULT']['screenwidth']

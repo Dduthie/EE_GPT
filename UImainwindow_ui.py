@@ -19,8 +19,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QComboBox, QGridLayout,
     QLabel, QMainWindow, QMenu, QMenuBar,
     QPushButton, QSizePolicy, QSlider, QSpacerItem,
-    QSplitter, QStackedWidget, QStatusBar, QTabWidget,
-    QTextEdit, QToolBar, QToolButton, QWidget)
+    QSpinBox, QSplitter, QStackedWidget, QStatusBar,
+    QTabWidget, QTextEdit, QToolBar, QToolButton,
+    QWidget)
 import Mainwindow_rc
 
 class Ui_Mainwindow(object):
@@ -170,60 +171,86 @@ class Ui_Mainwindow(object):
         self.tabWidget.setElideMode(Qt.ElideNone)
         self.tab = QWidget()
         self.tab.setObjectName(u"tab")
-        self.widget = QWidget(self.tab)
-        self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(40, 40, 311, 181))
-        self.gridLayout_4 = QGridLayout(self.widget)
+        self.gridLayout_7 = QGridLayout(self.tab)
+        self.gridLayout_7.setObjectName(u"gridLayout_7")
+        self.gridLayout_4 = QGridLayout()
         self.gridLayout_4.setObjectName(u"gridLayout_4")
-        self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
-        self.modelLabel = QLabel(self.widget)
-        self.modelLabel.setObjectName(u"modelLabel")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.modelLabel.sizePolicy().hasHeightForWidth())
-        self.modelLabel.setSizePolicy(sizePolicy1)
-        font1 = QFont()
-        font1.setFamilies([u"Segoe UI"])
-        font1.setPointSize(14)
-        self.modelLabel.setFont(font1)
-        self.modelLabel.setLayoutDirection(Qt.LeftToRight)
-        self.modelLabel.setStyleSheet(u"")
-
-        self.gridLayout_4.addWidget(self.modelLabel, 0, 0, 1, 1)
-
-        self.modelCombo = QComboBox(self.widget)
+        self.gridLayout_4.setHorizontalSpacing(20)
+        self.gridLayout_4.setVerticalSpacing(30)
+        self.modelCombo = QComboBox(self.tab)
         self.modelCombo.addItem("")
         self.modelCombo.addItem("")
         self.modelCombo.addItem("")
         self.modelCombo.addItem("")
         self.modelCombo.setObjectName(u"modelCombo")
-        sizePolicy2 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.modelCombo.sizePolicy().hasHeightForWidth())
-        self.modelCombo.setSizePolicy(sizePolicy2)
-        font2 = QFont()
-        font2.setFamilies([u"Segoe UI"])
-        font2.setPointSize(12)
-        self.modelCombo.setFont(font2)
+        sizePolicy1 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.modelCombo.sizePolicy().hasHeightForWidth())
+        self.modelCombo.setSizePolicy(sizePolicy1)
+        font1 = QFont()
+        font1.setFamilies([u"Segoe UI"])
+        font1.setPointSize(12)
+        self.modelCombo.setFont(font1)
 
         self.gridLayout_4.addWidget(self.modelCombo, 0, 1, 1, 1)
 
-        self.tempLabel = QLabel(self.widget)
+        self.modelLabel = QLabel(self.tab)
+        self.modelLabel.setObjectName(u"modelLabel")
+        sizePolicy.setHeightForWidth(self.modelLabel.sizePolicy().hasHeightForWidth())
+        self.modelLabel.setSizePolicy(sizePolicy)
+        font2 = QFont()
+        font2.setFamilies([u"Segoe UI"])
+        font2.setPointSize(14)
+        self.modelLabel.setFont(font2)
+        self.modelLabel.setLayoutDirection(Qt.LeftToRight)
+        self.modelLabel.setStyleSheet(u"")
+
+        self.gridLayout_4.addWidget(self.modelLabel, 0, 0, 1, 1)
+
+        self.tempLabel = QLabel(self.tab)
         self.tempLabel.setObjectName(u"tempLabel")
-        sizePolicy1.setHeightForWidth(self.tempLabel.sizePolicy().hasHeightForWidth())
-        self.tempLabel.setSizePolicy(sizePolicy1)
-        self.tempLabel.setFont(font1)
+        sizePolicy.setHeightForWidth(self.tempLabel.sizePolicy().hasHeightForWidth())
+        self.tempLabel.setSizePolicy(sizePolicy)
+        self.tempLabel.setFont(font2)
         self.tempLabel.setStyleSheet(u"")
         self.tempLabel.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
         self.gridLayout_4.addWidget(self.tempLabel, 1, 0, 1, 1)
 
-        self.tempSlider = QSlider(self.widget)
+        self.label_6 = QLabel(self.tab)
+        self.label_6.setObjectName(u"label_6")
+        self.label_6.setFont(font2)
+
+        self.gridLayout_4.addWidget(self.label_6, 4, 0, 1, 1)
+
+        self.comboBox = QComboBox(self.tab)
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.setObjectName(u"comboBox")
+
+        self.gridLayout_4.addWidget(self.comboBox, 5, 1, 1, 1)
+
+        self.horizontalSlider = QSlider(self.tab)
+        self.horizontalSlider.setObjectName(u"horizontalSlider")
+        self.horizontalSlider.setMinimum(1)
+        self.horizontalSlider.setMaximum(20)
+        self.horizontalSlider.setValue(11)
+        self.horizontalSlider.setOrientation(Qt.Horizontal)
+
+        self.gridLayout_4.addWidget(self.horizontalSlider, 2, 1, 1, 1)
+
+        self.label_2 = QLabel(self.tab)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setFont(font2)
+
+        self.gridLayout_4.addWidget(self.label_2, 5, 0, 1, 1)
+
+        self.tempSlider = QSlider(self.tab)
         self.tempSlider.setObjectName(u"tempSlider")
-        sizePolicy2.setHeightForWidth(self.tempSlider.sizePolicy().hasHeightForWidth())
-        self.tempSlider.setSizePolicy(sizePolicy2)
+        sizePolicy1.setHeightForWidth(self.tempSlider.sizePolicy().hasHeightForWidth())
+        self.tempSlider.setSizePolicy(sizePolicy1)
         self.tempSlider.setStyleSheet(u"    QSlider::groove:horizontal {\n"
 "        background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,\n"
 "                                    stop: 0 #0000FF, stop: 0.25 #00CCFF,\n"
@@ -232,14 +259,7 @@ class Ui_Mainwindow(object):
 "        height: 5px;\n"
 "    }\n"
 "\n"
-"    QSlider::handle:horizontal {\n"
-"        background: grey;\n"
-"        border: 1px solid #999999;\n"
-"        width: 10px;\n"
-"        height: 10px;\n"
-"        margin: -5px 0;\n"
-"        border-radius: 10px;\n"
-"    }")
+"")
         self.tempSlider.setMinimum(0)
         self.tempSlider.setMaximum(20)
         self.tempSlider.setValue(5)
@@ -252,41 +272,98 @@ class Ui_Mainwindow(object):
 
         self.gridLayout_4.addWidget(self.tempSlider, 1, 1, 1, 1)
 
+        self.label_4 = QLabel(self.tab)
+        self.label_4.setObjectName(u"label_4")
+        self.label_4.setFont(font2)
+
+        self.gridLayout_4.addWidget(self.label_4, 2, 0, 1, 1)
+
+        self.spinBox = QSpinBox(self.tab)
+        self.spinBox.setObjectName(u"spinBox")
+        self.spinBox.setMinimum(1)
+        self.spinBox.setMaximum(4096)
+        self.spinBox.setValue(4096)
+
+        self.gridLayout_4.addWidget(self.spinBox, 4, 1, 1, 1)
+
+        self.label_7 = QLabel(self.tab)
+        self.label_7.setObjectName(u"label_7")
+        self.label_7.setFont(font2)
+
+        self.gridLayout_4.addWidget(self.label_7, 3, 0, 1, 1)
+
+        self.horizontalSlider_2 = QSlider(self.tab)
+        self.horizontalSlider_2.setObjectName(u"horizontalSlider_2")
+        self.horizontalSlider_2.setMinimum(1)
+        self.horizontalSlider_2.setMaximum(20)
+        self.horizontalSlider_2.setValue(11)
+        self.horizontalSlider_2.setOrientation(Qt.Horizontal)
+
+        self.gridLayout_4.addWidget(self.horizontalSlider_2, 3, 1, 1, 1)
+
+
+        self.gridLayout_7.addLayout(self.gridLayout_4, 0, 0, 1, 1)
+
+        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_7.addItem(self.verticalSpacer_3, 1, 0, 1, 1)
+
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.gridLayout_7.addItem(self.horizontalSpacer_4, 0, 1, 1, 1)
+
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QWidget()
         self.tab_2.setObjectName(u"tab_2")
-        self.widget1 = QWidget(self.tab_2)
-        self.widget1.setObjectName(u"widget1")
-        self.widget1.setGeometry(QRect(40, 40, 241, 251))
-        self.gridLayout_5 = QGridLayout(self.widget1)
+        self.gridLayout_6 = QGridLayout(self.tab_2)
+        self.gridLayout_6.setObjectName(u"gridLayout_6")
+        self.restoreButton = QPushButton(self.tab_2)
+        self.restoreButton.setObjectName(u"restoreButton")
+        self.restoreButton.setStyleSheet(u"color: rgb(170, 0, 0);")
+
+        self.gridLayout_6.addWidget(self.restoreButton, 2, 0, 1, 1)
+
+        self.gridLayout_5 = QGridLayout()
         self.gridLayout_5.setObjectName(u"gridLayout_5")
-        self.gridLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.label_3 = QLabel(self.widget1)
-        self.label_3.setObjectName(u"label_3")
-        font3 = QFont()
-        font3.setFamilies([u"Segoe UI"])
-        font3.setPointSize(13)
-        self.label_3.setFont(font3)
+        self.gridLayout_5.setHorizontalSpacing(20)
+        self.gridLayout_5.setVerticalSpacing(30)
+        self.label_5 = QLabel(self.tab_2)
+        self.label_5.setObjectName(u"label_5")
+        self.label_5.setFont(font2)
 
-        self.gridLayout_5.addWidget(self.label_3, 0, 0, 1, 1)
+        self.gridLayout_5.addWidget(self.label_5, 2, 0, 1, 1)
 
-        self.fontbutton = QToolButton(self.widget1)
+        self.label = QLabel(self.tab_2)
+        self.label.setObjectName(u"label")
+        self.label.setFont(font2)
+
+        self.gridLayout_5.addWidget(self.label, 1, 0, 1, 1)
+
+        self.themeCombo = QComboBox(self.tab_2)
+        self.themeCombo.addItem("")
+        self.themeCombo.addItem("")
+        self.themeCombo.addItem("")
+        self.themeCombo.setObjectName(u"themeCombo")
+        sizePolicy1.setHeightForWidth(self.themeCombo.sizePolicy().hasHeightForWidth())
+        self.themeCombo.setSizePolicy(sizePolicy1)
+        self.themeCombo.setMinimumSize(QSize(100, 0))
+
+        self.gridLayout_5.addWidget(self.themeCombo, 2, 1, 1, 1)
+
+        self.fontbutton = QToolButton(self.tab_2)
         self.fontbutton.setObjectName(u"fontbutton")
-        sizePolicy1.setHeightForWidth(self.fontbutton.sizePolicy().hasHeightForWidth())
-        self.fontbutton.setSizePolicy(sizePolicy1)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.fontbutton.sizePolicy().hasHeightForWidth())
+        self.fontbutton.setSizePolicy(sizePolicy2)
         self.fontbutton.setMaximumSize(QSize(32, 32))
         self.fontbutton.setIcon(icon6)
         self.fontbutton.setIconSize(QSize(48, 48))
 
         self.gridLayout_5.addWidget(self.fontbutton, 0, 1, 1, 1)
 
-        self.label = QLabel(self.widget1)
-        self.label.setObjectName(u"label")
-        self.label.setFont(font3)
-
-        self.gridLayout_5.addWidget(self.label, 1, 0, 1, 1)
-
-        self.paletteButton = QToolButton(self.widget1)
+        self.paletteButton = QToolButton(self.tab_2)
         self.paletteButton.setObjectName(u"paletteButton")
         self.paletteButton.setMaximumSize(QSize(32, 32))
         icon9 = QIcon()
@@ -296,20 +373,26 @@ class Ui_Mainwindow(object):
 
         self.gridLayout_5.addWidget(self.paletteButton, 1, 1, 1, 1)
 
-        self.label_5 = QLabel(self.widget1)
-        self.label_5.setObjectName(u"label_5")
-        self.label_5.setFont(font3)
+        self.label_3 = QLabel(self.tab_2)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setFont(font2)
 
-        self.gridLayout_5.addWidget(self.label_5, 2, 0, 1, 1)
+        self.gridLayout_5.addWidget(self.label_3, 0, 0, 1, 1)
 
-        self.comboBox_2 = QComboBox(self.widget1)
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.addItem("")
-        self.comboBox_2.setObjectName(u"comboBox_2")
-        self.comboBox_2.setMinimumSize(QSize(120, 0))
 
-        self.gridLayout_5.addWidget(self.comboBox_2, 2, 1, 1, 1)
+        self.gridLayout_6.addLayout(self.gridLayout_5, 0, 0, 1, 1)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_6.addItem(self.verticalSpacer_2, 1, 0, 1, 1)
+
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.gridLayout_6.addItem(self.horizontalSpacer_2, 0, 2, 1, 1)
+
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.gridLayout_6.addItem(self.horizontalSpacer_3, 2, 1, 1, 1)
 
         self.tabWidget.addTab(self.tab_2, "")
 
@@ -373,7 +456,7 @@ class Ui_Mainwindow(object):
         self.retranslateUi(Mainwindow)
         self.actionExit.triggered.connect(Mainwindow.close)
 
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(0)
 
 
@@ -423,23 +506,32 @@ class Ui_Mainwindow(object):
         self.reset_Button.setText(QCoreApplication.translate("Mainwindow", u"Reset", None))
         self.Input.setPlaceholderText(QCoreApplication.translate("Mainwindow", u"Enter text here", None))
         self.submit_Button.setText(QCoreApplication.translate("Mainwindow", u"Submit", None))
-        self.modelLabel.setText(QCoreApplication.translate("Mainwindow", u"Model:", None))
         self.modelCombo.setItemText(0, QCoreApplication.translate("Mainwindow", u"ChatGPT 3.5", None))
         self.modelCombo.setItemText(1, QCoreApplication.translate("Mainwindow", u"ChatGPT 3.5 16k", None))
         self.modelCombo.setItemText(2, QCoreApplication.translate("Mainwindow", u"ChatGPT 4", None))
         self.modelCombo.setItemText(3, QCoreApplication.translate("Mainwindow", u"ChatGPT 4 32k", None))
 
+        self.modelLabel.setText(QCoreApplication.translate("Mainwindow", u"Model:", None))
         self.tempLabel.setText(QCoreApplication.translate("Mainwindow", u"Temperature:", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("Mainwindow", u"GPT Options", None))
-        self.label_3.setText(QCoreApplication.translate("Mainwindow", u"Change Font:", None))
-        self.fontbutton.setText(QCoreApplication.translate("Mainwindow", u"...", None))
-        self.label.setText(QCoreApplication.translate("Mainwindow", u"Accent Colour:", None))
-        self.paletteButton.setText(QCoreApplication.translate("Mainwindow", u"...", None))
-        self.label_5.setText(QCoreApplication.translate("Mainwindow", u"Theme:", None))
-        self.comboBox_2.setItemText(0, QCoreApplication.translate("Mainwindow", u"Auto", None))
-        self.comboBox_2.setItemText(1, QCoreApplication.translate("Mainwindow", u"Dark", None))
-        self.comboBox_2.setItemText(2, QCoreApplication.translate("Mainwindow", u"Light", None))
+        self.label_6.setText(QCoreApplication.translate("Mainwindow", u"Max Tokens:", None))
+        self.comboBox.setItemText(0, QCoreApplication.translate("Mainwindow", u"Delete messages", None))
+        self.comboBox.setItemText(1, QCoreApplication.translate("Mainwindow", u"Summarize conversation", None))
+        self.comboBox.setItemText(2, QCoreApplication.translate("Mainwindow", u"Choose messages", None))
 
+        self.label_2.setText(QCoreApplication.translate("Mainwindow", u"Token Limit Behaviour:", None))
+        self.label_4.setText(QCoreApplication.translate("Mainwindow", u"Presence Penatly:", None))
+        self.label_7.setText(QCoreApplication.translate("Mainwindow", u"Frequency Penalty:", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("Mainwindow", u"GPT Options", None))
+        self.restoreButton.setText(QCoreApplication.translate("Mainwindow", u"Reset all app defaults", None))
+        self.label_5.setText(QCoreApplication.translate("Mainwindow", u"Theme:", None))
+        self.label.setText(QCoreApplication.translate("Mainwindow", u"Accent Colour:", None))
+        self.themeCombo.setItemText(0, QCoreApplication.translate("Mainwindow", u"Auto", None))
+        self.themeCombo.setItemText(1, QCoreApplication.translate("Mainwindow", u"Dark", None))
+        self.themeCombo.setItemText(2, QCoreApplication.translate("Mainwindow", u"Light", None))
+
+        self.fontbutton.setText(QCoreApplication.translate("Mainwindow", u"...", None))
+        self.paletteButton.setText(QCoreApplication.translate("Mainwindow", u"...", None))
+        self.label_3.setText(QCoreApplication.translate("Mainwindow", u"Change Font:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("Mainwindow", u"App settings", None))
         self.menuChat.setTitle(QCoreApplication.translate("Mainwindow", u"File", None))
         self.menuEdit.setTitle(QCoreApplication.translate("Mainwindow", u"Edit", None))

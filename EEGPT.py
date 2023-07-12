@@ -11,9 +11,10 @@ from conversations import convoManager
 
 class EEGPT:
 
-    def __init__(self,startupPrompt=None) -> None:
-        self.API_KEY = os.environ['OPENAI_API_KEY']
-        openai.api_key= self.API_KEY
+    def __init__(self,key,startupPrompt=None) -> None:
+        # self.API_KEY = os.environ['OPENAI_API_KEY']
+        # openai.api_key= self.API_KEY
+        openai.api_key= key
         self.model = "gpt-3.5-turbo-0613"
         #self.model = "gpt-3.5-turbo-16k-0613"
         self.conversations = {}

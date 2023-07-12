@@ -10,7 +10,7 @@ from PySide6 import QtGui
 from PySide6.QtWidgets import (QApplication, QGridLayout, QLabel, QMainWindow,
     QMenu, QMenuBar, QPlainTextEdit, QPushButton,
     QSizePolicy, QStatusBar, QTextBrowser, QTextEdit,
-    QWidget,QFontDialog,QFileDialog,QColorDialog)
+    QWidget,QFontDialog,QFileDialog,QColorDialog,QMessageBox)
 from PySide6 import QtCore
 
 
@@ -66,6 +66,9 @@ class Mainwindow(QMainWindow, Ui_Mainwindow):
         self.paletteButton.released.connect(self._setColour)
         self.submit_Button.released.connect(self.send_message)
         self.reset_Button.released.connect(self.resetButton)
+        self.restoreButton.released.connect(self.restoreDefaults)
+
+        self.themeCombo.currentTextChanged.connect(self.themeChanged)
 
         self.splitter.setSizes([400,50])
 
@@ -82,6 +85,7 @@ class Mainwindow(QMainWindow, Ui_Mainwindow):
         self.actionadd_chat.triggered.connect(self.addChat)
         self.actionSave.triggered.connect(self.saveGPT)
         self.actionOpen_chat.triggered.connect(self.loadGPT)
+        self.actionExport_as_txt.triggered.connect(self.exportTXT)
 
         spacer = QWidget()
         spacer.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
@@ -92,6 +96,10 @@ class Mainwindow(QMainWindow, Ui_Mainwindow):
     def test(self):
         self.changeColours('000000')
 
+    @Slot()
+    def themeChanged(self,text:str):
+        qdarktheme.setup_theme(theme=text.lower(),custom_colors={'primary':f"#{self.colour}"})
+        self.settingsDict['theme'] = text.lower()
     @Slot()
     def saveGPT(self):
         filename = QFileDialog.getSaveFileName(self,
@@ -122,8 +130,14 @@ class Mainwindow(QMainWindow, Ui_Mainwindow):
 
     @Slot()        
     def resetView(self):
-        self.setGeometry(500,500,750,750)
-    
+        screen = QGuiApplication.primaryScreen().availableGeometry()
+        w = 750
+        h = 750
+        x= screen.width()/2 -w/2
+        y= screen.height()/2 - h/2
+        
+        self.setGeometry(x,y,w,h)
+
     @Slot()    
     def fullScreen(self):
         if self.isFullScreen():
@@ -180,13 +194,15 @@ class Mainwindow(QMainWindow, Ui_Mainwindow):
                 parent=self, options=QColorDialog.ColorDialogOption.DontUseNativeDialog
             )
         print(self.colour)
-        self.changeColours(self.colour.name().strip('#'))
-
+        noHash = self.colour.name().strip('#')
+        self.changeColours(noHash)
+        self.settingsDict['iconcolour'] = noHash
 
     def _setFont(self):
-        ok,self.newFont = QFontDialog.getFont()
-        self.Input.setFont(self.newFont)
-        self.Ouput.setFont(self.newFont)
+        ok,self.theFont = QFontDialog.getFont()
+
+        self.Input.setFont(self.theFont)
+        self.Ouput.setFont(self.theFont)
 
     def eventFilter(self, obj:QTextEdit, event:QKeyEvent):
         if event.type() == QtCore.QEvent.Type.KeyPress and obj is self.Input:
@@ -197,7 +213,8 @@ class Mainwindow(QMainWindow, Ui_Mainwindow):
 
     def send_message(self):
         input_text = self.Input.toPlainText()
-        # set background colour fo the text to blue 
+        
+        # set background colour fo the text to blue
         blueHighlight = '<span style="background-color:#0E3A8F;">{}</span><br><br>'
 
         self.Ouput.append(blueHighlight.format('> ' + input_text )+ '\n\n')
@@ -223,14 +240,30 @@ class Mainwindow(QMainWindow, Ui_Mainwindow):
     def update_tokens(self,num):
         self.statusBar().showMessage(f"Tokens: {num}/4096")
 
+    def restoreDefaults(self):
+        self.resetView()
+        qdarktheme.setup_theme(config.defaultDict['theme'])
+        self.theFont.setFamily(config.defaultDict['fontfam'])
+        self.theFont.setPointSizeF(config.defaultDict['fontsize'])
+        self.Input.setFont(self.theFont)
+        self.Ouput.setFont(self.theFont)   
+        self.changeColours(config.defaultDict['iconcolour'])    
+        pass
+    
     def startupSettings(self):
-        settingsDict = config.settingsDict
-        self.setGeometry(settingsDict['posx'],settingsDict['posy'],settingsDict['screenwidth'],settingsDict['screenheight'])
-        qdarktheme.setup_theme(settingsDict['theme'])
-        self.SVGcls = SVG(settingsDict['iconcolour'])
-        self.changeColours(settingsDict['iconcolour'])
-    
-    
+        self.settingsDict = config.settingsDict
+        self.setGeometry(self.settingsDict['posx'],self.settingsDict['posy'],self.settingsDict['screenwidth'],self.settingsDict['screenheight'])
+        qdarktheme.setup_theme(self.settingsDict['theme'])
+        self.SVGcls = SVG(self.settingsDict['iconcolour'])
+        if bool(self.settingsDict['maximized']):
+            self.showMaximized()
+        self.colour = self.settingsDict['iconcolour']
+        self.theFont = QFont()
+        self.theFont.setFamily(self.settingsDict['fontfam'])
+        self.theFont.setPointSizeF(self.settingsDict['fontsize'])
+        self.Input.setFont(self.theFont)
+        self.Ouput.setFont(self.theFont)
+
     # change this function to a for loop
     def changeColours(self, colour):
         self.SVGcls.changeColour(colour)
@@ -242,47 +275,87 @@ class Mainwindow(QMainWindow, Ui_Mainwindow):
             self.actionOpen_chat: "./Resources/folder_open_FILL14.svg",
             self.actionSave: "./Resources/save_FILL1_24.svg",
             self.actionFont: "./Resources/font_download_FILL1_24.svg",
-            self.actionDelete: "./Resources/delete_FILL1_24.svg"
+            self.actionDelete: "./Resources/delete_FILL1_24.svg",
+            self.actionExport_as_txt: "./Resources/export_FILL_48.svg"
         }
         for action, path in icon_paths.items():
             icon = QIcon()
             icon.addFile(path, QSize(), QIcon.Normal, QIcon.Off)
-            action.setIcon(icon)     
+            action.setIcon(icon)
 
+        icon = QIcon()
+        icon.addFile("./Resources/font_download_FILL1_24.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.fontbutton.setIcon(icon)
+        icon = QIcon()
+        icon.addFile("./Resources/palette_FILL1_48.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.paletteButton.setIcon(icon)
+        
+        qdarktheme.setup_theme(self.settingsDict['theme'],custom_colors={'primary':f"#{colour}"})
+        
+    def exportTXT(self):
+        filename = QFileDialog.getSaveFileName(self,
+            "Save Chat", "/home/", "Chat Export (*.txt)")
+        if filename[0]:
+            export = convoManager.exportConvo()
+            with open(filename[0],'w') as f:
+                for line in export:
+                    f.write(line)
+        
     def closeEvent(self, event):
         # Perform any necessary saving or cleanup operations here
-        settingsDict = {}
+        self.settingsDict = {}
         geo = self.geometry()
         if self.isMaximized():
             diff = self.frameGeometry().height() - self.geometry().height()
             geoScreen = QGuiApplication.primaryScreen().availableGeometry()
             height = geoScreen.height() - diff
             width = geoScreen.width()
+            maxmized = True
         else :
+            maxmized = False
             height = geo.height()
             width =  geo.width()
         x = geo.x()
         y = geo.y()
         self.hide()
-        settingsDict['screenwidth'] = str(width)
-        settingsDict['screenheight'] = str(height)
-        settingsDict['posx'] = str(x)
-        settingsDict['posy'] = str(y)
-        settingsDict['maximized'] = str(True)
-        settingsDict['iconcolour'] = 'FFFFFF'
-        settingsDict['theme'] ='auto'
-        config.setUserSettings(settingsDict)
+        
+        self.Ouput.fontPointSize()
+        
+        font = self.Ouput.currentFont()
+        
+        self.settingsDict['screenwidth'] = str(width)
+        self.settingsDict['screenheight'] = str(height)
+        self.settingsDict['posx'] = str(x)
+        self.settingsDict['posy'] = str(y)
+        self.settingsDict['maximized'] = str(maxmized)
+        self.settingsDict['iconcolour'] = 'FFFFFF'
+        self.settingsDict['fontfam']= font.family()
+        self.settingsDict['fontsize']= str(font.pointSizeF())
+        config.setUserSettings(self.settingsDict)
         event.accept()
 
+def loadKey():
+    with open('license.key','r') as f:
+        key = f.readline()
+        return key
+        
+
 if __name__ == "__main__":
+    file_path = os.path.join(os.getcwd(), "license.key")
+    if not os.path.exists(file_path):
+        appCheck = QApplication([])
+        # Show a popup error message
+        error_message = "No license file detected. Ask Darian for key."
+        QMessageBox.critical(None, "Error", error_message)    
+        sys.exit(1)
+        
+    key = loadKey()
     cwd = os.getcwd()
-    bot = EEGPT()
+    bot = EEGPT(key)
     config = Configurator()
     app = QApplication(sys.argv)
     window = Mainwindow()
     window.startupSettings()
-    #qdarktheme.setup_theme(custom_colors={"primary": "#DC7633"})
-
     window.show()
 
     sys.exit(app.exec())
