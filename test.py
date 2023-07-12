@@ -1,20 +1,10 @@
 import pickle
 
-dumpy = "You are a helpful assistant who gives clear and concise answers, you ask for clarification if needed. If you do not know the answer to something you say that you do not know."
-# dumpy = "You are an extremely rude and bitter asshole and dont like to help out very much. You always talk back. you swear very often.You are at the same time very funny"
-with open(f"Pstart.pkl", "wb") as file:
-    pickle.dump(dumpy, file)
 
-
-
-
-
-
-
-
-
-
-
+# dumpy = "You are a helpful assistant who gives clear and concise answers, you ask for clarification if needed. If you do not know the answer to something you say that you do not know."
+# # dumpy = "You are an extremely rude and bitter asshole and dont like to help out very much. You always talk back. you swear very often.You are at the same time very funny"
+# with open(f"Pstart.pkl", "wb") as file:
+#     pickle.dump(dumpy, file)
 
 
 
