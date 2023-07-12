@@ -170,7 +170,7 @@ class PromptManager:
 
     def startUpPrompt(self):
         try:
-            with open('Pstart.pkl', "rb") as file:
+            with open('./pickles/Pstart.pkl', "rb") as file:
                 self.prompts.append(pickle.load(file))
                 print("Prompts loaded from file.")
         except FileNotFoundError:
