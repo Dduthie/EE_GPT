@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="Icons">
+    <file>Resources/palette_FILL1_48.svg</file>
+    <file>Resources/export_FILL_48.svg</file>
+    <file>Resources/delete_FILL1_24.svg</file>
     <file>Resources/artificial-intelligence-48.png</file>
     <file>Resources/chat_add_on_FILL1_24.svg</file>
     <file>Resources/chat_FILL1_24.svg</file>

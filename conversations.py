@@ -1,12 +1,11 @@
 import pickle
 from typing import List, Dict
 
-
 class Conversation:
     def __init__(self, conversation_id: int):
         self.id: int = conversation_id
         self.GPTmessages: List[str] = []
-        self.html: str = None
+        self.html: str = ""
         self.state: int = 0
 
     def addSystem(self, chat: str):
@@ -17,7 +16,6 @@ class Conversation:
 
     def addGPT(self, chat: str):
         self.GPTmessages.append({"role": "assistant", "content": chat})
-
 
 class ConversationManager:
     def __init__(self, conversations: Dict[int, Conversation] = None):
@@ -32,9 +30,15 @@ class ConversationManager:
     def resetConvo(self):
         currentMessages = self.conversations[self.currentConversation].GPTmessages
         self.conversations[self.currentConversation].GPTmessages = currentMessages[:1]
-    
+
+    def getCurrentConversationID(self):
+        return self.currentConversation
+
     def getCurrentConversation(self):
         return self.conversations[self.currentConversation].GPTmessages
+
+    def getCurrentHTML(self):
+        return self.conversations[self.currentConversation].html
 
     def addUserChat(self, chat: str):
         self.conversations[self.currentConversation].addUser(chat)
@@ -44,42 +48,37 @@ class ConversationManager:
 
     def addConversation(self, oldMessage: str):
         self.conversations[self.currentConversation].html = oldMessage
-        newConvoId = self.getNewConversationId()
+        newConvoId = self.__getNewConversationId()
         self.currentConversation = newConvoId
         newConvo = Conversation(newConvoId)
         self.conversations[newConvoId] = newConvo
         selectedPrompt = self.promptManager.getSelectedPrompt()
         newConvo.addSystem(selectedPrompt)
 
-    def changeConversation(self, convoId: int):
-        if convoId in self.conversations:
-            self.currentConversation = convoId
-            print(f"Changed conversation to {convoId}")
-        else:
-            print(f"Conversation {convoId} does not exist.")
+    def changeConversation(self, convoId: int,oldMessage):
+        self.conversations[self.currentConversation].html = oldMessage
+        self.currentConversation = convoId
+        print(f"Changed conversation to {convoId}")
 
-    def removeConversation(self, convoId: int):
-        if convoId in self.conversations:
-            del self.conversations[convoId]
-            self.updateConversationIds()
-            if self.currentConversation == convoId:
-                self.currentConversation = 0
-                print("Changed conversation to 0")
-            print(f"Removed conversation {convoId}")
+    def removeConversation(self):
+        if len(self.conversations) == 1 or self.currentConversation == 0:
+            self.resetConvo()
+            return
         else:
-            print(f"Conversation {convoId} does not exist.")
+            del self.conversations[self.currentConversation]
+            self.__updateConversationsIds()
+            self.currentConversation -= 1
 
-    def saveConversation(self, convoId: int):
-        if convoId in self.conversations:
-            conversation = self.conversations[convoId]
-            try:
-                with open(f"conversation_{convoId}.pickle", "wb") as file:
-                    pickle.dump(conversation, file)
-                print(f"Conversation {convoId} saved.")
-            except FileNotFoundError:
-                print(f"Error: Conversation {convoId} could not be saved.")
-        else:
-            print(f"Conversation {convoId} does not exist.")
+    def saveConversation(self,filename:str,html):
+        conversation = self.conversations[self.currentConversation]
+        conversation.html = html
+        try:
+            with open(filename, "wb") as file:
+                pickle.dump(conversation, file)
+            print(f"Conversation saved.")
+        except FileNotFoundError:
+            print(f"Error: Conversation could not be saved.")
+
 
     def saveAllConversations(self):
         for convoId, conversation in self.conversations.items():
@@ -89,6 +88,27 @@ class ConversationManager:
                 print(f"Conversation {convoId} saved.")
             except FileNotFoundError:
                 print(f"Error: Conversation {convoId} could not be saved.")
+
+    def loadConversation(self,filename,oldHTML,loadMultiple=False):
+        if loadMultiple: 
+            for name in filename:
+                try:
+                    with open(name, "rb") as file:
+                        conversation = pickle.load(file)
+                        print("conversation loaded from file.")
+                        self.__loadConversation(oldHTML,conversation)
+                except FileNotFoundError:
+                    print("No conversation loaded.")
+        else:
+            try:
+                with open(filename, "rb") as file:
+                    conversation = pickle.load(file)
+                    print("conversation loaded from file.")
+                    print(conversation.html)
+                    self.__loadConversation(oldHTML,conversation)
+                    
+            except FileNotFoundError:
+                print("No conversation loaded.")
 
     def addPrompt(self, prompt: str):
         self.promptManager.addPrompt(prompt)
@@ -111,20 +131,30 @@ class ConversationManager:
     def getSelectedPrompt(self):
         return self.promptManager.getSelectedPrompt()
 
-    def getNewConversationId(self):
+    def getHTML(self):
+        return self.conversations[self.currentConversation].html
+
+    def __getNewConversationId(self):
         if not self.conversations:
             return 1
         return max(self.conversations.keys()) + 1
 
-    def updateConversationIds(self):
+    def __updateConversationsIds(self):
         updatedConversations = {}
-        newId = 1
+        newId = 0
         for convoId, conversation in self.conversations.items():
             updatedConversations[newId] = conversation
             newId += 1
         self.conversations = updatedConversations
 
+    def __loadConversation(self,oldConvo,convo):
+        self.conversations[self.currentConversation].html = oldConvo
+        newConvoId = self.__getNewConversationId()
+        self.currentConversation = newConvoId
+        self.conversations[newConvoId] = convo
 
+
+        
 class PromptManager:
     def __init__(self):
         self.prompts: List[str] = []
@@ -163,6 +193,5 @@ class PromptManager:
                 print("Prompts loaded from file.")
         except FileNotFoundError:
             print("File not found. No prompts loaded.")
-
 
 convoManager = ConversationManager()

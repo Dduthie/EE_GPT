@@ -29,9 +29,9 @@ class EEGPT:
         # self.messages.append(self.startPrompt)
         self.stream = True
     
-    def resetPrompt(self):
-        self.messages = []
-        self.messages.append(self.startPrompt)
+    # def resetPrompt(self):
+    #     convoManager.
+    #     pass
 
     def read_file(self):
         with open('gpt.txt', 'r') as file:
@@ -87,8 +87,8 @@ class EEGPT:
             return response
         else:
             message = response['choices'][0]['message']
-            print()
-            print(message['content'])
+            # print()
+            # print(message['content'])
             self.messages.append(message)
             return message['content']
 

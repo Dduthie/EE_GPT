@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>Mainwindow</class>
+ <widget class="QMainWindow" name="Mainwindow">
   <property name="enabled">
    <bool>true</bool>
   </property>
@@ -9,12 +9,49 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>772</width>
-    <height>730</height>
+    <width>782</width>
+    <height>750</height>
    </rect>
   </property>
+  <property name="palette">
+   <palette>
+    <active>
+     <colorrole role="ToolTipText">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </active>
+    <inactive>
+     <colorrole role="ToolTipText">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </inactive>
+    <disabled>
+     <colorrole role="ToolTipText">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </disabled>
+   </palette>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>GPT</string>
   </property>
   <property name="windowIcon">
    <iconset resource="Mainwindow.qrc">
@@ -43,12 +80,12 @@
        <string notr="true"/>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="1" column="1">
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="reset_Button">
           <property name="text">
            <string>Reset</string>
           </property>
@@ -115,7 +152,7 @@
          </spacer>
         </item>
         <item row="1" column="2">
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="submit_Button">
           <property name="text">
            <string>Submit</string>
           </property>
@@ -125,10 +162,13 @@
       </widget>
       <widget class="QWidget" name="page_2">
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
+        <item row="0" column="1">
          <widget class="QTabWidget" name="tabWidget">
           <property name="layoutDirection">
            <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
           </property>
           <property name="tabPosition">
            <enum>QTabWidget::North</enum>
@@ -146,124 +186,292 @@
            <attribute name="title">
             <string>GPT Options</string>
            </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout">
-            <item>
-             <widget class="QLabel" name="label">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <family>Segoe UI</family>
-                <pointsize>14</pointsize>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <property name="text">
-               <string>Model:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="comboBox">
-              <property name="font">
-               <font>
-                <family>Segoe UI</family>
-                <pointsize>12</pointsize>
-               </font>
-              </property>
-              <item>
-               <property name="text">
-                <string>ChatGPT 3.5</string>
+           <widget class="QWidget" name="">
+            <property name="geometry">
+             <rect>
+              <x>40</x>
+              <y>40</y>
+              <width>311</width>
+              <height>181</height>
+             </rect>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_4">
+             <item row="0" column="0">
+              <widget class="QLabel" name="modelLabel">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
                </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>ChatGPT 3.5 16k</string>
+               <property name="font">
+                <font>
+                 <family>Segoe UI</family>
+                 <pointsize>14</pointsize>
+                </font>
                </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>ChatGPT 4</string>
+               <property name="layoutDirection">
+                <enum>Qt::LeftToRight</enum>
                </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>ChatGPT 4 32k</string>
+               <property name="styleSheet">
+                <string notr="true"/>
                </property>
-              </item>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <family>Segoe UI</family>
-                <pointsize>14</pointsize>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <property name="text">
-               <string>Temperature:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSlider" name="horizontalSlider">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>20</number>
-              </property>
-              <property name="value">
-               <number>5</number>
-              </property>
-              <property name="sliderPosition">
-               <number>5</number>
-              </property>
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="invertedAppearance">
-               <bool>false</bool>
-              </property>
-              <property name="invertedControls">
-               <bool>false</bool>
-              </property>
-              <property name="tickPosition">
-               <enum>QSlider::TicksAbove</enum>
-              </property>
-              <property name="tickInterval">
-               <number>1</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
+               <property name="text">
+                <string>Model:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QComboBox" name="modelCombo">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Segoe UI</family>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+               <item>
+                <property name="text">
+                 <string>ChatGPT 3.5</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>ChatGPT 3.5 16k</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>ChatGPT 4</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>ChatGPT 4 32k</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="tempLabel">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Segoe UI</family>
+                 <pointsize>14</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>Temperature:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QSlider" name="tempSlider">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">    QSlider::groove:horizontal {
+        background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+                                    stop: 0 #0000FF, stop: 0.25 #00CCFF,
+                                    stop: 0.5 #00FF00, stop: 0.75 #FFCC00,
+                                    stop: 1 #FF0000);
+        height: 5px;
+    }
+
+    QSlider::handle:horizontal {
+        background: grey;
+        border: 1px solid #999999;
+        width: 10px;
+        height: 10px;
+        margin: -5px 0;
+        border-radius: 10px;
+    }</string>
+               </property>
+               <property name="minimum">
+                <number>0</number>
+               </property>
+               <property name="maximum">
+                <number>20</number>
+               </property>
+               <property name="value">
+                <number>5</number>
+               </property>
+               <property name="sliderPosition">
+                <number>5</number>
+               </property>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="invertedAppearance">
+                <bool>false</bool>
+               </property>
+               <property name="invertedControls">
+                <bool>false</bool>
+               </property>
+               <property name="tickPosition">
+                <enum>QSlider::TicksAbove</enum>
+               </property>
+               <property name="tickInterval">
+                <number>1</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
           </widget>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
             <string>App settings</string>
            </attribute>
+           <widget class="QWidget" name="">
+            <property name="geometry">
+             <rect>
+              <x>40</x>
+              <y>40</y>
+              <width>241</width>
+              <height>251</height>
+             </rect>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_5">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_3">
+               <property name="font">
+                <font>
+                 <family>Segoe UI</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Change Font:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QToolButton" name="fontbutton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>...</string>
+               </property>
+               <property name="icon">
+                <iconset resource="Mainwindow.qrc">
+                 <normaloff>:/Icons/Resources/font_download_FILL1_24.svg</normaloff>:/Icons/Resources/font_download_FILL1_24.svg</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>48</width>
+                 <height>48</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label">
+               <property name="font">
+                <font>
+                 <family>Segoe UI</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Accent Colour:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QToolButton" name="paletteButton">
+               <property name="maximumSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>...</string>
+               </property>
+               <property name="icon">
+                <iconset resource="Mainwindow.qrc">
+                 <normaloff>:/Icons/Resources/palette_FILL1_48.svg</normaloff>:/Icons/Resources/palette_FILL1_48.svg</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>48</width>
+                 <height>48</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_5">
+               <property name="font">
+                <font>
+                 <family>Segoe UI</family>
+                 <pointsize>13</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Theme:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QComboBox" name="comboBox_2">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Auto</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Dark</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Light</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </widget>
           </widget>
          </widget>
         </item>
@@ -278,7 +486,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>772</width>
+     <width>782</width>
      <height>22</height>
     </rect>
    </property>
@@ -286,14 +494,18 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionLoad_ffile"/>
-    <addaction name="actionSave_file"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionOpen_chat"/>
+    <addaction name="actionExport_as_txt"/>
     <addaction name="separator"/>
+    <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
      <string>Edit</string>
     </property>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -356,6 +568,7 @@
    </attribute>
    <addaction name="actionchat"/>
    <addaction name="actionadd_chat"/>
+   <addaction name="actionDelete"/>
    <addaction name="separator"/>
    <addaction name="actionSettings"/>
    <addaction name="actionFont"/>
@@ -376,6 +589,9 @@
    </property>
   </action>
   <action name="actionchat">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="Mainwindow.qrc">
      <normaloff>:/Icons/Resources/chat_FILL1_24.svg</normaloff>:/Icons/Resources/chat_FILL1_24.svg</iconset>
@@ -411,7 +627,7 @@
      <normaloff>:/Icons/Resources/folder_open_FILL14.svg</normaloff>:/Icons/Resources/folder_open_FILL14.svg</iconset>
    </property>
    <property name="text">
-    <string>Open chat</string>
+    <string>Load conversation</string>
    </property>
    <property name="toolTip">
     <string>Open a previous chat</string>
@@ -426,7 +642,7 @@
      <normaloff>:/Icons/Resources/save_FILL1_24.svg</normaloff>:/Icons/Resources/save_FILL1_24.svg</iconset>
    </property>
    <property name="text">
-    <string>Save</string>
+    <string>Save conversation</string>
    </property>
    <property name="toolTip">
     <string>save current chat</string>
@@ -465,14 +681,68 @@
     <string>Load conversation</string>
    </property>
   </action>
-  <action name="actionSave_file">
+  <action name="actionDelete">
+   <property name="icon">
+    <iconset resource="Mainwindow.qrc">
+     <normaloff>:/Icons/Resources/delete_FILL1_24.svg</normaloff>:/Icons/Resources/delete_FILL1_24.svg</iconset>
+   </property>
    <property name="text">
-    <string>Save conversation</string>
+    <string>Delete</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="text">
+    <string>Undo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="text">
+    <string>Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
+   </property>
+  </action>
+  <action name="actionExport_as_txt">
+   <property name="icon">
+    <iconset resource="Mainwindow.qrc">
+     <normaloff>:/Icons/Resources/export_FILL_48.svg</normaloff>:/Icons/Resources/export_FILL_48.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Export as .txt</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
    </property>
   </action>
  </widget>
  <resources>
   <include location="Mainwindow.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>triggered()</signal>
+   <receiver>Mainwindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>390</x>
+     <y>374</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
