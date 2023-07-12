@@ -1,6 +1,0 @@
-<RCC>
-  <qresource prefix="Settings">
-    <file>settings_fill.svg</file>
-    <file>settings_unchecked.svg</file>
-  </qresource>
-</RCC>

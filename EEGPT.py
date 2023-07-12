@@ -7,23 +7,32 @@ requests.packages.urllib3.disable_warnings()
 import os
 import openai
 import tiktoken
+from conversations import convoManager
 
-class EEGPT():
+class EEGPT:
 
-    def __init__(self) -> None:
-        self.API_KEY = os.environ['OPENAI_API_KEY']
-        openai.api_key= self.API_KEY
+    def __init__(self,key,startupPrompt=None) -> None:
+        # self.API_KEY = os.environ['OPENAI_API_KEY']
+        # openai.api_key= self.API_KEY
+        openai.api_key= key
         self.model = "gpt-3.5-turbo-0613"
         #self.model = "gpt-3.5-turbo-16k-0613"
-        self.messages=[
-                {"role": "system", "content": "You are a helpful assistant who gives clear and concise answers, extra chat is kept to a minimum."}, 
-            ]
+        self.conversations = {}
+        self.messages = []
 
+        # self.startPrompt={
+        #     "role": "system", "content": "You are a helpful assistant who gives clear and concise answers, you ask for clarification if needed. If you do not know the answer to something you say that you do not know."
+        #     }
+        # self.startPrompt={
+        #     "role": "system", "content": "You are an extremely rude and bitter asshole and dont like to help out very much. You always talk back. you swear very often.You are at the same time very funny"
+        #     }
+        
+        # self.messages.append(self.startPrompt)
         self.stream = True
     
-    def resetPrompt(self):
-        return [{"role": "user", "content": "You are a helpful assistant."},
-                {"role": "assistant", "content": " Okay."}]
+    # def resetPrompt(self):
+    #     convoManager.
+    #     pass
 
     def read_file(self):
         with open('gpt.txt', 'r') as file:
@@ -42,46 +51,45 @@ class EEGPT():
         print(message)
     
     #message receiever/parser
-    def GPT(self,prompt):
+    def GPT(self):  
+        # if prompt == '/reset':
+        #     self.messages = self.resetPrompt()
+        #     return []
         
-        if prompt == '/reset':
-            self.messages = self.resetPrompt()
-            return []
-
-        else:
-            prompt = {"role": "user", "content": prompt}
-            self.messages.append(prompt)
-            response = self.send_messages()
-            result = ''
-            for chunk in response:
-                try:
-                    res = chunk['choices'][0]['delta']['content']
-                    result += res
-                    yield res
-                    
-                except KeyError:
-                    pass
+        # prompt = {"role": "user", "content": prompt}
+        # self.messages.append(prompt)
+        response = self.send_messages()
+        result = ''
+        for chunk in response:
+            try:
+                res = chunk['choices'][0]['delta']['content']
+                result += res
+                yield res
                 
-            self.messages.append({"role": "assistant", "content": result})
+            except KeyError:
+                pass
+        convoManager.addGPTChat(result)
+        # self.messages.append({"role": "assistant", "content": result})
 
-    
     def get_tokens(self):
-        num = self.num_tokens_from_messages(self.messages)
+        num = self.num_tokens_from_messages(convoManager.getCurrentConversation())
         return(num)     
     
     def send_messages(self):
+        messages = convoManager.getCurrentConversation()
         response = openai.ChatCompletion.create(
         model=self.model,
-        messages=self.messages,
-        stream=self.stream
+        messages=messages,
+        stream=self.stream,
+        temperature = 0.1
         
         )
         if self.stream:
             return response
         else:
             message = response['choices'][0]['message']
-            print()
-            print(message['content'])
+            # print()
+            # print(message['content'])
             self.messages.append(message)
             return message['content']
 
